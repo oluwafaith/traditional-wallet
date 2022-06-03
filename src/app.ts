@@ -13,6 +13,7 @@ import usersRouter from './routes/userRoutes';
 import authRouter from './routes/authRoutes'
 import productRouter from './routes/productRoutes'
 import transactionRouter from './routes/transactionRoute'
+import purchaseRouter from './routes/purchaseRoutes'
 const app = express();
 
 
@@ -28,9 +29,10 @@ app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.static(path.join(__dirname,'..', 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/products', productRouter);
+app.use('/api/v1/purchase', purchaseRouter);
 app.use('/api/v1/transactions', transactionRouter);
 
 // catch 404 and forward to error handler
