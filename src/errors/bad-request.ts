@@ -1,4 +1,4 @@
-import CustomAPIError from './custom-api';
+import CustomAPIError from "./custom-api";
 
 class BadRequestError extends CustomAPIError {
   statusCode: any;
@@ -8,4 +8,4 @@ class BadRequestError extends CustomAPIError {
   }
 }
 
-export default BadRequestError
+export default BadRequestError;

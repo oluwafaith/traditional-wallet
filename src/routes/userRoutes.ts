@@ -1,25 +1,25 @@
-import express from 'express';
+import express from "express";
 const router = express.Router();
 import {
   authenticateUser,
   authorizePermissions,
-} from '../middleWare/authentication';
+} from "../middleWare/authentication";
 import {
   getAllUsers,
   getSingleUser,
   showCurrentUser,
   updateUser,
-  updateUserPassword,}
-from '../controllers/userController';
+  updateUserPassword,
+} from "../controllers/userController";
 
 router
-  .route('/')
-  .get(authenticateUser, authorizePermissions('admin'), getAllUsers);
+  .route("/")
+  .get(authenticateUser, authorizePermissions("admin"), getAllUsers);
 
-router.route('/showMe').get(authenticateUser, showCurrentUser);
-router.route('/updateUser').patch(authenticateUser, updateUser);
-router.route('/updateUserPassword').patch(authenticateUser, updateUserPassword);
+router.route("/showMe").get(authenticateUser, showCurrentUser);
+router.route("/updateUser").patch(authenticateUser, updateUser);
+router.route("/updateUserPassword").patch(authenticateUser, updateUserPassword);
 
-router.route('/:id').get(authenticateUser, getSingleUser);
+router.route("/:id").get(authenticateUser, getSingleUser);
 
 export default router;

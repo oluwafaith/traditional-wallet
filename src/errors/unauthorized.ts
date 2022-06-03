@@ -1,4 +1,4 @@
-import CustomAPIError from './custom-api';
+import CustomAPIError from "./custom-api";
 
 class UnauthorizedError extends CustomAPIError {
   statusCode: any;
@@ -8,4 +8,4 @@ class UnauthorizedError extends CustomAPIError {
   }
 }
 
-export default UnauthorizedError
+export default UnauthorizedError;

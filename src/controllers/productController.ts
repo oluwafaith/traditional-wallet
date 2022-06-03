@@ -2,7 +2,6 @@ import { Product } from "../models/productModel";
 import { Request, Response, NextFunction } from "express";
 import { catchAsync } from "../utils/catchAsync";
 import CustomError from "../errors";
-import path from "path";
 
 const createProduct = catchAsync(async (req: any, res: Response) => {
   const product = await Product.create(req.body);
@@ -25,7 +24,5 @@ const getSingleProduct = catchAsync(async (req: Request, res: Response) => {
 
   res.status(201).json({ product });
 });
-
-
 
 export { getAllProducts, createProduct, getSingleProduct };
