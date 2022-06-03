@@ -1,9 +1,7 @@
 import {User} from "../models/userModel"
 import {Request, Response, NextFunction } from 'express'
-import jwt from 'jsonwebtoken'
 import { catchAsync } from "../utils/catchAsync"
 import CustomError from "../errors"
-import { createJWT } from "../utils/jwt"
 import {attachCookiesToResponse, createUserToken} from "../utils/index"
 
  const signup =catchAsync( async (req: Request, res: Response, next: NextFunction)=>{
