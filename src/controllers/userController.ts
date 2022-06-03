@@ -7,10 +7,12 @@ import {
   checkPermissions,
 } from '../utils';
 
-const getAllUsers = async (req:Request, res:Response) => {
+const getAllUsers = async (req:any, res:Response) => {
+ 
   
   const users = await User.find({ role: 'user' }).select('-password');
   res.status(200).json({ users });
+
 };
 
 const getSingleUser = async (req:Request, res:Response) => {

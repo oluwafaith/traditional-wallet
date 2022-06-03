@@ -1,8 +1,8 @@
-import {Request, Response, Application} from 'express'
+import {Request, Response, Application, NextFunction} from 'express'
 import CustomError from '../errors';
 import{ isTokenValid } from '../utils';
 
-const authenticateUser = async (req: any, res: Response, next: any) => {
+const authenticateUser = async (req: any, res: Response, next:NextFunction) => {
   const token = req.signedCookies.token;
 
   if (!token) {
@@ -20,17 +20,17 @@ const authenticateUser = async (req: any, res: Response, next: any) => {
 };
 
 const authorizePermissions = (...roles: any[]) => {
-  return (req: any, res: Response, next: Application) => {
+  return (req: any, res: Response, next: NextFunction) => {
     if (!roles.includes(req.user.role)) {
       throw new CustomError.UnauthorizedError(
         'Unauthorized to access this route'
       );
     }
-    // next();
+    next();
   };
 };
 
-module.exports = {
+export {
   authenticateUser,
   authorizePermissions,
 };

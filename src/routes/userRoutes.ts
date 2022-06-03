@@ -1,9 +1,9 @@
 import express from 'express';
 const router = express.Router();
-const {
+import {
   authenticateUser,
   authorizePermissions,
-} = require('../middleware/authentication');
+} from '../middleWare/authentication';
 import {
   getAllUsers,
   getSingleUser,
