@@ -10,7 +10,7 @@ import {
   authorizePermissions,
 } from "../middleWare/authentication";
 
-router.post("/deposit", creditAccount);
+router.post("/deposit", authenticateUser, creditAccount);
 router.post("/withdraw", authenticateUser, debitAccount);
 router.get("/balance", authenticateUser, walletBalance);
 
