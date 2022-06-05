@@ -7,16 +7,15 @@ import { catchAsync } from "../utils/catchAsync";
 import { Order } from "../models/purchaseModel";
 
 export const creditAccount = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { email, amount } = req.body;
-    const user = await User.findOne({ email });
+  async (req: any, res: Response, next: NextFunction) => {
+    const {  amount } = req.body;
+    
+    req.body.user = req.user.userId;
 
-    if (!user) {
-      throw new CustomError.UnauthenticatedError("Invalid Credentials");
-    }
+    const user = await User.findOne({ userId: req.user.userId })
 
     const updatedWallet = await User.findOneAndUpdate(
-      { email },
+      { userId: req.body.user.userId },
       { $inc: { wallet: amount } }
     );
 
@@ -36,11 +35,45 @@ export const creditAccount = catchAsync(
     });
   }
 );
+// export const creditAccount = catchAsync(
+//   async (req: any, res: Response, next: NextFunction) => {
+//     const { email, amount } = req.body;
+//     const user = await User.findOne({ email });
+
+//     // req.body.userWallet = req.userWallet.userId;
+//     console.log(req.body.user);
+    
+    
+//     if (!user) {
+//       throw new CustomError.UnauthenticatedError("Invalid Credentials");
+//     }
+
+//     const updatedWallet = await User.findOneAndUpdate(
+//       { email },
+//       { $inc: { wallet: amount } }
+//     );
+
+//     const transaction = await Transaction.create([
+//       {
+//         amount,
+//         name: user.name,
+//         email: user.email,
+//         balanceBefore: user.wallet,
+//         balanceAfter: user.wallet + Number(amount),
+//       },
+//     ]);
+//     res.status(201).json({
+//       message: "Credit successful",
+//       data: updatedWallet,
+//       transaction,
+//     });
+//   }
+// );
 
 export const debitAccount = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: any, res: Response, next: NextFunction) => {
     const { email, amount } = req.body;
-
+    req.body.user = req.user.userId;
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -53,18 +86,21 @@ export const debitAccount = catchAsync(
 
     const updatedWallet = await User.findOneAndUpdate(
       { email },
-      { $inc: { wallet: amount } }
+      { $inc: { wallet: -amount } }
     );
 
+    
     const transaction = await Transaction.create([
       {
         amount,
         name: user.name,
         email: user.email,
-        balanceBefore: user.wallet,
-        balanceAfter: user.wallet - Number(amount),
+        balanceBefore: Number(user.wallet),
+        balanceAfter: Number(user.wallet) - Number(amount),
       },
     ]);
+    console.log( Number(user.wallet) - Number(amount));
+    
     res.status(201).json({
       message: "Withdrawal successful",
       data: updatedWallet,
