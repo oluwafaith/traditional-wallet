@@ -8,17 +8,16 @@ import { Order } from "../models/purchaseModel";
 
 export const creditAccount = catchAsync(
   async (req: any, res: Response, next: NextFunction) => {
+    
     const {  amount } = req.body;
     
     req.body.user = req.user.userId;
+    req.body.email = req.user.email;
 
-    const user = await User.findOne({ userId: req.user.userId })
-
-    const updatedWallet = await User.findOneAndUpdate(
-      { userId: req.body.user.userId },
+    const user = await User.findOneAndUpdate({ _id: req.user.userId },
       { $inc: { wallet: amount } }
-    );
-
+      )
+    
     const transaction = await Transaction.create([
       {
         amount,
@@ -28,9 +27,11 @@ export const creditAccount = catchAsync(
         balanceAfter: user.wallet + Number(amount),
       },
     ]);
+
+  
     res.status(201).json({
       message: "Credit successful",
-      data: updatedWallet,
+      // data: user,
       transaction,
     });
   }
@@ -72,20 +73,22 @@ export const creditAccount = catchAsync(
 
 export const debitAccount = catchAsync(
   async (req: any, res: Response, next: NextFunction) => {
-    const { email, amount } = req.body;
+    const {  amount } = req.body;
+    
+    
     req.body.user = req.user.userId;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({_id: req.user.userId });
 
-    if (!user) {
-      throw new CustomError.UnauthenticatedError("Invalid Credentials");
-    }
+    // if (!user) {
+    //   throw new CustomError.UnauthenticatedError("Invalid Credentials");
+    // }
 
     if (user.wallet < amount) {
       throw new CustomError.BadRequestError("Insufficient balance");
     }
 
     const updatedWallet = await User.findOneAndUpdate(
-      { email },
+      { _id: req.user.userId  },
       { $inc: { wallet: -amount } }
     );
 
@@ -99,7 +102,7 @@ export const debitAccount = catchAsync(
         balanceAfter: Number(user.wallet) - Number(amount),
       },
     ]);
-    console.log( Number(user.wallet) - Number(amount));
+   
     
     res.status(201).json({
       message: "Withdrawal successful",
@@ -108,6 +111,44 @@ export const debitAccount = catchAsync(
     });
   }
 );
+// export const debitAccount = catchAsync(
+//   async (req: any, res: Response, next: NextFunction) => {
+//     const { email, amount } = req.body;
+//     req.body.user = req.user.userId;
+//     const user = await User.findOne({ email });
+
+//     if (!user) {
+//       throw new CustomError.UnauthenticatedError("Invalid Credentials");
+//     }
+
+//     if (user.wallet < amount) {
+//       throw new CustomError.BadRequestError("Insufficient balance");
+//     }
+
+//     const updatedWallet = await User.findOneAndUpdate(
+//       { email },
+//       { $inc: { wallet: -amount } }
+//     );
+
+    
+//     const transaction = await Transaction.create([
+//       {
+//         amount,
+//         name: user.name,
+//         email: user.email,
+//         balanceBefore: Number(user.wallet),
+//         balanceAfter: Number(user.wallet) - Number(amount),
+//       },
+//     ]);
+//     console.log( Number(user.wallet) - Number(amount));
+    
+//     res.status(201).json({
+//       message: "Withdrawal successful",
+//       data: updatedWallet,
+//       transaction,
+//     });
+//   }
+// );
 
 export const purchaseProduct = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {

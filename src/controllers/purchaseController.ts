@@ -53,9 +53,12 @@ export const orderProduct = catchAsync(async (req: any, res: Response) => {
 });
 
 export const purchaseProduct = catchAsync(async (req: any, res: Response) => {
+
+  req.body.user = req.user.userId;
+  
   const { email, amount, orderId, userId } = req.body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ _id: req.user.userId  });
 
   const order = await Order.findOne({ id: userId });
 
@@ -73,7 +76,7 @@ export const purchaseProduct = catchAsync(async (req: any, res: Response) => {
 
   const updatedWallet = await User.findOneAndUpdate(
     { email },
-    { $inc: { wallet: amount } }
+    { $inc: { wallet: -amount } }
   );
 
   const transaction = await Transaction.create([
@@ -87,7 +90,7 @@ export const purchaseProduct = catchAsync(async (req: any, res: Response) => {
   ]);
   res.status(201).json({
     message: "purchase successful",
-    data: updatedWallet,
+    // data: updatedWallet,
     transaction,
   });
 });

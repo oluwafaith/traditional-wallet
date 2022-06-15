@@ -7,6 +7,14 @@ const transactionSchema = new mongoose.Schema(
       required: true,
       default: 0,
     },
+    name: {
+      type: String,
+     
+    },
+    email: {
+      type: String,    
+    },
+
     // userWallet: {
     //   type: String,
     //   ref: "User",
@@ -25,4 +33,4 @@ const transactionSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-export const Transaction = mongoose.model("Wallet", transactionSchema);
+export const Transaction = mongoose.model("Transaction", transactionSchema);
