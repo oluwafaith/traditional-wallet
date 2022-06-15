@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "tsc": "tsc",
-    "postinstall": "npm run tsc"
+    "tsc": "./node_modules/typescript/bin/tsc",
+"build": "tsc",
+"postinstall": "npm run build"
   },
   "dependencies": {
     "@types/cors": "^2.8.12",
