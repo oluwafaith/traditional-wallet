@@ -6,17 +6,21 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@types/cors": "^2.8.12",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^16.0.1",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
+    "express-mongo-sanitize": "^2.2.0",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.5",
     "morgan": "~1.9.1",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -26,5 +30,8 @@
     "@types/jsonwebtoken": "^8.5.8",
     "@types/morgan": "^1.9.3",
     "@types/validator": "^13.7.2"
+  },
+  "engines": {
+    "node": "14.x"
   }
 }
