@@ -5,6 +5,7 @@ import express, { NextFunction } from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
+import helmet from 'helmet';
 import cors from "cors";
 import mongoSanitize from "express-mongo-sanitize"
 
@@ -20,7 +21,8 @@ const app = express();
 app.set("views", path.join(__dirname, "..", "views"));
 app.set("view engine", "ejs");
 
-app.use(logger("dev"));
+// app.use(logger("dev"));
+app.use(helmet());
 app.use(cors());
 app.use(mongoSanitize());
 
